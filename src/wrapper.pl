@@ -34,7 +34,7 @@ while (1) {
   $key_pressed = ReadKey(-1);
   $key_pressed = 0 unless defined $key_pressed;
   last if ($key_pressed eq "q");
-  if ($key_pressed eq "\n") {
+  if ($key_pressed eq "/") {
     $key_pressed = 1;
     $idle        = 0;
   } else {
@@ -51,7 +51,7 @@ while (1) {
   # If keyboard pressed ENTER earlier, capture a line of input
   if ($key_pressed) {
     ReadMode('normal');
-    print ">";
+    print "/";
     $key_buffer = <>;
     ReadMode('raw');
   };
