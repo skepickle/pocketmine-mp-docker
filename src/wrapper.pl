@@ -23,6 +23,8 @@ my $key_buffer = "";
 my $pm_stdout_buffer = "";
 my $pm_stderr_buffer = "";
 
+my @keys_pressed = ();
+
 my $idle = 1;
 
 my $result = 0;
@@ -32,15 +34,28 @@ while (1) {
 
   # Check STDIN for presses ENTER key
   $key_pressed = ReadKey(-1);
+  if (defined $key_pressed) {
+    push(@keys_pressed, ord($key_pressed));
+    print("Keys Pressed:");
+    foreach my $key (@keys_pressed) {
+      printf(" #%x", $key);
+    };
+    print "\n";
+  };
   $key_pressed = 0 unless defined $key_pressed;
   last if ($key_pressed eq "q");
   if ($key_pressed eq "/") {
-    $key_pressed = 1;
-    $idle        = 0;
+    $key_pressed  = 1;
+    $idle         = 0;
+    @keys_pressed = ();
   } else {
-    $key_pressed = 0;
-    $idle        = 0;
+    $key_pressed  = 0;
+    $idle         = 0;
   };
+
+  # Detect control escape sequences
+    # Up Arrow = #1b #5b #41
+    # Down Arrow = #1b #5b #42
 
   # Pipe full output lines from PocketMine-MP
   if ((defined $pm_stdout_h) &&
@@ -48,7 +63,7 @@ while (1) {
   if ((defined $pm_stderr_h) &&
       (pipe_lines($pm_stderr_h,$pm_stderr_buffer,'!'))) { $idle = 0; };
 
-  # If keyboard pressed ENTER earlier, capture a line of input
+  # If keyboard pressed '/' earlier, capture a line of input
   if ($key_pressed) {
     ReadMode('normal');
     print "/";
