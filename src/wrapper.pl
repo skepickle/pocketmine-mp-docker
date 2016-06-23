@@ -80,11 +80,12 @@ while (1) {
     printf "PocketMine-MP ended with error code %d\n", $result;
     my $count_down = 5;
     print "Stopping container in:\n";
-    while ($count_down > 0) {
-      printf "\t%d%s\n", $count_down, ($count_down>1)?("..."):(".");
+    while ($count_down >= 0) {
+      printf "\t%d%s\n", $count_down, ($count_down>0)?("..."):(".");
       $count_down -= 1;
       sleep(1);
     };
+    print "Goodbye\n";
     last;
   };
 
