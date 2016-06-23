@@ -1,10 +1,14 @@
 #!/usr/bin/perl -w
 use strict;
 use warnings;
+use Term::ReadLine;
 use Term::ReadKey;
 use IPC::Open3;
 use POSIX ":sys_wait_h";
 use Time::HiRes qw(sleep);
+
+my $term = new Term::ReadLine 'ProgramName';
+print "Using: ", $term->ReadLine, "\n";               # is Gnu installed?
 
 my ($pm_stdin_h, $pm_stdout_h, $pm_stderr_h);
 my $pm_pid = open3($pm_stdin_h, $pm_stdout_h, $pm_stderr_h, '/pm/start.sh --no-wizard')

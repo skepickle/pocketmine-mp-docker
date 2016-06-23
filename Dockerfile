@@ -3,7 +3,8 @@ FROM ubuntu:16.04
 MAINTAINER Skepickle
 
 RUN DEBIAN_FRONTEND=noninteractive set -x \
-    && apt-get update && apt-get install -y --no-install-recommends ca-certificates wget libterm-readkey-perl && rm -rf /var/lib/apt/lists/*
+    && apt-get update && apt-get install -y --no-install-recommends ca-certificates wget libterm-readkey-perl libterm-readline-gnu-perl \
+    && rm -rf /var/lib/apt/lists/*
 
 ENV GOSU_VERSION 1.9
 RUN set -x \
