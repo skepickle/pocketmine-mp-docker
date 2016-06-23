@@ -9,6 +9,8 @@ use Time::HiRes qw(sleep);
 
 my $term = new Term::ReadLine 'ProgramName';
 print "Using: ", $term->ReadLine, "\n";               # is Gnu installed?
+$term->MinLine(1);
+$term->Attribs->ornaments(0);
 
 my ($pm_stdin_h, $pm_stdout_h, $pm_stderr_h);
 my $pm_pid = open3($pm_stdin_h, $pm_stdout_h, $pm_stderr_h, '/pm/start.sh --no-wizard')
@@ -70,8 +72,9 @@ while (1) {
   # If keyboard pressed '/' earlier, capture a line of input
   if ($key_pressed) {
     ReadMode('normal');
-    print "/";
-    $key_buffer = <>;
+    $|=1;
+    $key_buffer = $term->readline('/');
+    $|=0;
     ReadMode('raw');
   };
 
