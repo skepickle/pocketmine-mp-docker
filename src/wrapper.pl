@@ -11,7 +11,7 @@ use Time::HiRes qw(sleep);
 my $DEBUG = 0;
 
 $SIG{TSTP} = sub { };
-#TODO: Add clean shutdown for $SIG{KILL}
+#TODO: Add clean shutdown for $SIG{TERM} and $SIG{KILL}
 
 my $term = new Term::ReadLine 'ProgramName';
 print "DEBUG Using: ", $term->ReadLine, "\n" if ($DEBUG);
