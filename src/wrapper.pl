@@ -11,6 +11,7 @@ use Time::HiRes qw(sleep);
 my $DEBUG = 0;
 
 $SIG{TSTP} = sub { };
+#TODO: Add clean shutdown for $SIG{KILL}
 
 my $term = new Term::ReadLine 'ProgramName';
 print "DEBUG Using: ", $term->ReadLine, "\n" if ($DEBUG);
@@ -40,7 +41,7 @@ my $result = 0;
 while (1) {
   $idle = 1;
 
-  # Check STDIN for presses ENTER key
+  # Check STDIN for either '/' or up-arrow
   $key_pressed = ReadKey(-1);
   if (defined $key_pressed) {
     push(@keys_pressed, ord($key_pressed));
@@ -81,7 +82,7 @@ while (1) {
   if ((defined $pm_stderr_h) &&
       (pipe_lines($pm_stderr_h,$pm_stderr_buffer,'!'))) { $idle = 0; };
 
-  # If keyboard pressed '/' earlier, capture a line of input
+  # If keyboard pressed '/' or up-arrow earlier, capture a line of input
   if ($key_pressed) {
     if ($key_preput eq "") {
       $key_buffer = readline_signaltrap($term,'/');
@@ -96,7 +97,7 @@ while (1) {
     };
   };
 
-  # Pipe full output lines from PocketMine-MP
+  # Pipe full output lines from PocketMine-MP (Again)
   if ((defined $pm_stdout_h) &&
       (pipe_lines($pm_stdout_h,$pm_stdout_buffer,'<'))) { $idle = 0; };
   if ((defined $pm_stderr_h) &&
